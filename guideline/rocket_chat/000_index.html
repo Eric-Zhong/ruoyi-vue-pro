@@ -1,0 +1,805 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rocket.Chat 完整功能详解</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #333;
+            line-height: 1.8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 24px 40px;
+            background-color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+        }
+        h1 {
+            font-size: 2em;
+            text-align: center;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.5em;
+        }
+        h2 {
+            font-size: 1.6em;
+            border-bottom: 1px solid #eaecef;
+            padding-bottom: 0.4em;
+        }
+        h3 {
+            font-size: 1.3em;
+        }
+        p {
+            margin-bottom: 1.2em;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        strong {
+            color: #c23531;
+        }
+        ul, ol {
+            padding-left: 2em;
+        }
+        li {
+            margin-bottom: 0.5em;
+        }
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background-color: #f6f8fa;
+            padding: 0.2em 0.4em;
+            margin: 0;
+            font-size: 85%;
+            border-radius: 3px;
+        }
+        pre {
+            background-color: #f6f8fa;
+            padding: 16px;
+            overflow: auto;
+            border-radius: 6px;
+            line-height: 1.45;
+        }
+        pre code {
+            padding: 0;
+            margin: 0;
+            font-size: 100%;
+            background-color: transparent;
+        }
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 1.5em 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid #dfe2e5;
+            padding: 10px 15px;
+            font-size: 0.95em;
+        }
+        th {
+            background-color: #f6f8fa;
+            font-weight: 600;
+        }
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 15px 25px;
+            margin-bottom: 2em;
+        }
+        .toc-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+        .toc ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+        .toc ul li {
+            margin-bottom: 8px;
+        }
+        .toc ul ul {
+            padding-left: 25px;
+            margin-top: 8px;
+        }
+        .chart-wrapper {
+            width: 100%;
+            height: 450px;
+            margin: 20px 0;
+        }
+        .data-source {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: -15px;
+            margin-bottom: 30px;
+        }
+        .data-source a {
+            color: #555;
+        }
+    </style>
+<link rel="stylesheet" href="https://static.tiangong.cn/fe/skywork-site-assets/styles/doc_reference_style.css?v=1974607666970607616"/></head>
+<body style="padding-bottom: 50px;">
+<div class="container">
+<h1 id="section-main-title">Rocket.Chat 完整功能详解</h1>
+<div class="toc">
+<div class="toc-title">目录</div>
+<ul>
+<li><a href="#section-core-communication">核心通讯功能</a>
+<ul>
+<li><a href="#section-message-sending">消息发送与群组聊天</a></li>
+<li><a href="#section-audio-video-call">音视频通话与屏幕共享</a></li>
+<li><a href="#section-e2e-encryption">端到端加密</a></li>
+<li><a href="#section-notifications">通知与状态管理</a></li>
+</ul>
+</li>
+<li><a href="#section-collaboration-productivity">协作与生产力工具</a>
+<ul>
+<li><a href="#section-file-sharing">文件共享与云存储</a></li>
+<li><a href="#section-task-management">任务管理与待办集成</a></li>
+<li><a href="#section-apps-integration">第三方应用集成与工作流自动化</a></li>
+</ul>
+</li>
+<li><a href="#section-customization-extensibility">可定制性与扩展性</a>
+<ul>
+<li><a href="#section-ui-customization">界面定制与主题</a></li>
+<li><a href="#section-api-integration">API 集成与开发者工具</a></li>
+<li><a href="#section-apps-marketplace">应用市场与插件生态</a></li>
+<li><a href="#section-code-customization">代码定制与二次开发</a></li>
+</ul>
+</li>
+<li><a href="#section-management-deployment">管理与部署</a>
+<ul>
+<li><a href="#section-user-management">用户管理</a></li>
+<li><a href="#section-permission-control">权限控制</a></li>
+<li><a href="#section-deployment-options">部署选项（私有云、公有云等）</a></li>
+<li><a href="#section-security-compliance">安全与合规</a></li>
+<li><a href="#section-performance-scaling">性能与扩展</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>Rocket.Chat 是一款开源的团队通信平台，具备丰富的功能以满足企业即时通讯、协作和管理的需求<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 是一款开源的团队通信平台，具备丰富的功能以满足企业即时通讯、协作和管理的需求。" id="skTag-1974606512296513543" class="sk-source-tag" data-sk-source-id="1974606512296513543"></em>。其核心功能可以分为四大类，如下图所示：</p>
+<div class="chart-wrapper" id="chart1"></div>
+<div class="data-source">数据来源: 综合分析 <em data-ref-id="1974607643155349504" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349504" data-sk-source-text="数据来源: 综合分析" class="sk-source-tag"></em>, <em data-ref-id="1974607643155349505" data-sk-source-text="," class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349505"></em>, <em data-ref-id="1974607643155349506" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349506" data-sk-source-text=","></em></div>
+<p>下面将从<strong>核心通讯功能</strong>、<strong>协作与生产力工具</strong>、<strong>可定制性与扩展性</strong>、<strong>管理与部署</strong>四个方面，对 Rocket.Chat 的功能进行详尽说明。</p>
+<h2 id="section-core-communication">核心通讯功能</h2>
+<h3 id="section-message-sending">消息发送与群组聊天</h3>
+<ul>
+<li><strong>即时消息与频道</strong>：支持一对一的私信和多人频道（Channel）聊天。频道分为公开频道和私有群组，可根据需要控制访问范围 <em data-ref-id="1974607643155349507" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349507" data-sk-source-text="即时消息与频道 ：支持一对一的私信和多人频道（Channel）聊天。频道分为公开频道和私有群组，可根据需要控制访问范围" class="sk-source-tag"></em>。用户可以在频道中进行实时文字交流、@提及特定成员，使用表情符号和消息格式（如加粗、斜体、代码块等）丰富表达。</li>
+<li><strong>消息搜索与归档</strong>：提供强大的消息搜索功能，用户可以按关键词、日期或用户搜索历史聊天记录。支持频道消息归档，将不再活跃的频道存档以保持界面整洁。</li>
+<li><strong>消息编辑与删除</strong>：允许用户编辑或删除自己发送的消息（可设置编辑/删除的时间窗口），并在消息列表中显示编辑标记，确保沟通记录的清晰和准确。</li>
+<li><strong>群组讨论与线程</strong>：对于长篇讨论，支持消息线程（Threads）功能，用户可以在不干扰主频道的情况下对某条消息展开独立讨论。此外，可创建<strong>群组会话</strong>（Private Group）用于小范围的私密讨论。</li>
+<li><strong>全局通知与@all</strong>：支持使用 <code>@all</code> 或 <code>@here</code> 提及频道中的所有成员或在线成员，以重要通知。此功能可由管理员配置提及人数上限，避免滥用 <em data-ref-id="1974607643155349508" data-sk-source-id="1974607643155349508" data-sk-source-text="全局通知与@all ：支持使用 @all 或 @here 提及频道中的所有成员或在线成员，以重要通知。此功能可由管理员配置提及人数上限，避免滥用" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model"></em>。</li>
+</ul>
+<h3 id="section-audio-video-call">音视频通话与屏幕共享</h3>
+<ul>
+<li><strong>语音和视频会议</strong>：Rocket.Chat 内置实时音视频通话功能，支持多人视频会议和语音通话 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 内置实时音视频通话功能，支持多人视频会议和语音通话 。" id="skTag-1974606511944572928" class="sk-source-tag" data-sk-source-id="1974606511944572928"></em>。用户可以从文字聊天一键切换到语音/视频通话，支持屏幕共享，方便远程协作和演示。</li>
+<li><strong>第三方会议集成</strong>：Rocket.Chat 支持与多种视频会议服务集成，例如 Jitsi Meet、BigBlueButton、Pexip 等 <em data-ref-id="1974607643155349510" data-sk-source-text="第三方会议集成 ：Rocket.Chat 支持与多种视频会议服务集成，例如 Jitsi Meet、BigBlueButton、Pexip 等" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349510"></em>。这些集成通过应用市场提供，可按需启用，以满足不同场景的会议需求。</li>
+<li><strong>屏幕共享与录制</strong>：在视频会议中，用户可以共享自己的屏幕或特定应用窗口，供与会者观看。部分集成方案还支持会议录制和回放功能，方便后续查看讨论内容。</li>
+<li><strong>通话控制</strong>：会议主持人可对参与者进行静音/取消静音、禁言、踢出等操作，保障会议秩序。支持会议密码和等待室设置，以控制会议访问权限。</li>
+</ul>
+<h3 id="section-e2e-encryption">端到端加密</h3>
+<ul>
+<li><strong>私有消息加密</strong>：Rocket.Chat 支持对私信和群组消息启用端到端加密（E2EE），确保只有发送方和预期接收方能够阅读消息内容，即使服务器管理员也无法解密。此功能基于 OpenPGP 协议，用户需在客户端生成或导入密钥对。</li>
+<li><strong>加密状态提示</strong>：当某条消息已启用端到端加密时，客户端界面会有相应的锁状图标提示，增强用户信心。E2EE 开启后，消息历史仅保存在客户端本地，换设备登录需导入密钥才能查看过往加密消息。</li>
+<li><strong>群组加密支持</strong>：除一对一聊天外，Rocket.Chat 的 E2EE 也支持群组聊天（需所有群成员都启用加密并交换公钥），方便小团队进行安全的群聊沟通。</li>
+</ul>
+<h3 id="section-notifications">通知与状态管理</h3>
+<ul>
+<li><strong>多渠道通知</strong>：用户可以配置多种通知方式，包括桌面通知、手机推送通知、邮件通知等。当有新消息@提及自己或私信时，系统会根据用户设置发出提醒，确保不错过重要信息。</li>
+<li><strong>消息免打扰与静音</strong>：支持对特定频道或群组设置静音，不接收该频道的新消息通知，从而减少干扰。用户也可以设置全局的免打扰时段或状态，在繁忙时暂停通知。</li>
+<li><strong>在线状态显示</strong>：每位用户都有在线状态（在线、忙碌、离开、离线等），团队成员可以一目了然地看到彼此的状态，方便决定沟通方式。状态可以手动设置，也可由系统根据用户活动自动更新。</li>
+<li><strong>未读消息与提醒</strong>：界面直观显示每个频道的未读消息数量和@提及次数。支持消息置顶功能，重要消息可固定在频道顶部。用户还能设置消息提醒（Reminder），让系统在指定时间再次通知某条消息。</li>
+</ul>
+<h2 id="section-collaboration-productivity">协作与生产力工具</h2>
+<h3 id="section-file-sharing">文件共享与云存储</h3>
+<ul>
+<li><strong>文件上传与共享</strong>：用户可以在聊天中直接上传和分享文件，支持常见文档、图片、视频等格式。文件上传后会在消息中以附件形式展示，其他成员可在线预览或下载。</li>
+<li><strong>云存储集成</strong>：Rocket.Chat 提供多种文件存储后端，包括本地文件系统、GridFS（MongoDB内嵌存储）、Amazon S3 兼容存储等 <em data-ref-id="1974607643155349511" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349511" data-sk-source-text="云存储集成 ：Rocket.Chat 提供多种文件存储后端，包括本地文件系统、GridFS（MongoDB内嵌存储）、Amazon S3 兼容存储等"></em>。管理员可根据需要配置将上传的文件存储在自建服务器或云存储中，支持 MinIO 等 S3 兼容服务 <em data-ref-id="1974607643155349512" data-sk-source-text="。管理员可根据需要配置将上传的文件存储在自建服务器或云存储中，支持 MinIO 等 S3 兼容服务" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349512"></em>。</li>
+<li><strong>大文件传输</strong>：支持大文件上传（可配置最大文件大小），并在传输过程中显示进度。对于超大文件，系统会分块上传以提高稳定性。文件上传后支持生成分享链接，方便与外部人员共享。</li>
+<li><strong>媒体预览与嵌入</strong>：聊天中上传的图片、视频、PDF 等文件通常可以直接预览。Rocket.Chat 也支持链接预览，当粘贴网页URL时会自动抓取标题和缩略图，提高信息传达效率。</li>
+</ul>
+<h3 id="section-task-management">任务管理与待办集成</h3>
+<ul>
+<li><strong>任务分配与跟踪</strong>：通过集成第三方任务管理工具，Rocket.Chat 可以成为团队任务协作的中心<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 可以成为团队任务协作的中心。" id="skTag-1974606512296513543" class="sk-source-tag" data-sk-source-id="1974606512296513543"></em>。例如，用户可以在聊天中创建待办事项或将消息转换为任务，分配给团队成员并跟踪完成进度。</li>
+<li><strong>Todoist 集成示例</strong>：借助 Rocket.Chat 应用市场的 Todoist 集成，用户能够在聊天中直接创建和管理 Todoist 任务 <em data-ref-id="1974607643155349513" data-sk-source-type="model" data-sk-source-id="1974607643155349513" data-sk-source-text="Todoist 集成示例 ：借助 Rocket.Chat 应用市场的 Todoist 集成，用户能够在聊天中直接创建和管理 Todoist 任务" class="sk-source-tag" data-skywork="text_badge"></em>。例如，通过输入特定命令或使用对话按钮，将讨论中的事项添加到 Todoist 项目，并接收任务提醒。</li>
+<li><strong>其他项目管理</strong>：除了 Todoist，Rocket.Chat 还支持与 Jira、Trello、Asana 等项目管理系统集成<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 还支持与 Jira、Trello、Asana 等项目管理系统集成。" id="skTag-1974606574601265156" class="sk-source-tag" data-sk-source-id="1974606574601265156"></em>。这些集成允许用户在聊天中查询任务状态、创建工单或接收项目更新通知，实现沟通与任务管理的一体化。</li>
+<li><strong>笔记与协作编辑</strong>：某些插件（如 Rocket.Chat 的 Notes 应用）可以在频道中创建共享笔记，支持多人实时编辑。这为团队提供了一个轻量的文档协作空间，与聊天上下文紧密结合。</li>
+</ul>
+<h3 id="section-apps-integration">第三方应用集成与工作流自动化</h3>
+<ul>
+<li><strong>应用市场集成</strong>：Rocket.Chat 提供官方应用市场，内置多种第三方服务的集成应用 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 提供官方应用市场，内置多种第三方服务的集成应用 。" id="skTag-1974606574601265156" class="sk-source-tag" data-sk-source-id="1974606574601265156"></em>。用户可以一键安装如 GitHub、GitLab、Slack 桥接、Zapier、Office 365 登录等应用，将 Rocket<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="用户可以一键安装如 GitHub、GitLab、Slack 桥接、Zapier、Office 365 登录等应用，将 Rocket." id="skTag-1974606511948767233" class="sk-source-tag" data-sk-source-id="1974606511948767233"></em>.Chat 与常用工具打通。</li>
+<li><strong>机器人与自动化</strong>：支持创建聊天机器人（Bot）来执行自动化任务。Rocket.Chat 兼容流行的 Hubot 机器人框架，可编写脚本来响应命令、查询信息或执行操作 <em data-ref-id="1974607643155349515" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349515" data-sk-source-text="机器人与自动化 ：支持创建聊天机器人（Bot）来执行自动化任务。Rocket.Chat 兼容流行的 Hubot 机器人框架，可编写脚本来响应命令、查询信息或执行操作"></em>。通过机器人，团队可以实现如自动欢迎新成员、定时提醒、IT 支持问答等功能。</li>
+<li><strong>入站/出站 Webhook</strong>：提供强大的 Webhook 集成机制。管理员可以配置出站 Webhook，当特定事件发生（如新消息、用户加入等）时，向自定义的 URL 发送 HTTP 请求，实现与外部系统的联动。同样，入站 Webhook 允许外部服务向 Rocket<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="同样，入站 Webhook 允许外部服务向 Rocket." id="skTag-1974606267619037185" class="sk-source-tag" data-sk-source-id="1974606267619037185"></em>.Chat 的频道推送消息，例如 CI/CD 系统构建结果通知、监控告警等。</li>
+<li><strong>Zapier 和 Integromat</strong>：Rocket.Chat 与 Zapier 等自动化平台有官方集成，用户无需编程即可通过 Zapier 将 Rocket.Chat 与成千上万的应用连接，实现复杂的工作流自动化。例如，将表单提交内容自动发送到聊天频道，或将聊天中的任务同步到项目管理软件。</li>
+</ul>
+<h2 id="section-customization-extensibility">可定制性与扩展性</h2>
+<h3 id="section-ui-customization">界面定制与主题</h3>
+<ul>
+<li><strong>品牌定制</strong>：Rocket.Chat 支持企业级的品牌化定制。管理员可以上传自定义的登录页面背景、公司Logo，修改界面配色方案，打造与企业形象一致的聊天环境。</li>
+<li><strong>主题切换</strong>：客户端提供深色模式和浅色模式等主题选择，用户可根据个人偏好切换界面外观。部分第三方皮肤或 CSS 定制也可应用，以进一步个性化界面风格。</li>
+<li><strong>界面布局与模块</strong>：管理员可以配置界面上的模块显示，例如是否启用左侧导航栏的团队（Teams）入口、是否显示在线用户列表等。通过设置，可以简化界面以适应不同使用场景。</li>
+<li><strong>自定义消息格式</strong>：支持使用 Markdown 语法格式化消息内容，使文本具有标题、列表、引用、代码块等格式。这一功能提升了消息的可读性，用户可以灵活排版长消息或技术内容。</li>
+</ul>
+<h3 id="section-api-integration">API 集成与开发者工具</h3>
+<ul>
+<li><strong>REST API 和 Real-time API</strong>：Rocket.Chat 提供完善的 REST API 用于服务器端集成，涵盖用户管理、频道管理、消息发送等各方面 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 提供完善的 REST API 用于服务器端集成，涵盖用户管理、频道管理、消息发送等各方面 。" id="skTag-1974606575278563332" class="sk-source-tag" data-sk-source-id="1974606575278563332"></em>。同时支持基于 WebSocket 的实时 API，可订阅频道消息、用户状态等事件，实现实时数据同步。</li>
+<li><strong>OpenAPI 文档</strong>：官方提供了 OpenAPI (Swagger) 格式的 API 文档，方便开发者浏览和测试接口 <em data-ref-id="1974607643155349517" data-sk-source-text="OpenAPI 文档 ：官方提供了 OpenAPI (Swagger) 格式的 API 文档，方便开发者浏览和测试接口" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349517"></em>。通过 OpenAPI 文档，开发者可以快速了解各 API 端点的功能、参数和返回值，降低集成难度。</li>
+<li><strong>SDK 和示例</strong>：社区和官方维护了多种编程语言的 SDK 或客户端库，如 JavaScript、Python、Java 等，简化与 Rocket.Chat API 的交互。此外还有丰富的 API 使用示例和教程，指导开发者实现如自动创建用户、发送消息机器人等常见需求 <em data-ref-id="1974607643155349518" data-sk-source-type="model" data-sk-source-id="1974607643155349518" data-sk-source-text="SDK 和示例 ：社区和官方维护了多种编程语言的 SDK 或客户端库，如 JavaScript、Python、Java 等，简化与 Rocket.Chat API 的交互。此外还有丰富的 API 使用示例和教程，指导开发者实现如自动创建用户、发送消息机器人等常见需求" class="sk-source-tag" data-skywork="text_badge"></em>。</li>
+<li><strong>开发者控制台</strong>：Rocket.Chat 服务端基于 Meteor 框架，开发者可以使用 Meteor 提供的命令行工具和调试器对服务端代码进行调试<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 服务端基于 Meteor 框架，开发者可以使用 Meteor 提供的命令行工具和调试器对服务端代码进行调试。" id="skTag-1974606387778576385" class="sk-source-tag" data-sk-source-id="1974606387778576385"></em>。客户端为 React 应用，支持在浏览器开发者工具中调试前端代码。这为深度定制和排错提供了便利。</li>
+</ul>
+<h3 id="section-apps-marketplace">应用市场与插件生态</h3>
+<ul>
+<li><strong>官方应用市场</strong>：Rocket.Chat 的应用市场是一个集中获取扩展功能的平台 <em data-ref-id="1974607643155349519" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349519" data-sk-source-text="官方应用市场 ：Rocket.Chat 的应用市场是一个集中获取扩展功能的平台"></em>。管理员可以在后台浏览、安装和管理各种应用插件，这些应用包括与第三方服务的集成、自定义功能模块等，丰富工作区的功能。</li>
+<li><strong>Apps-Engine 开发框架</strong>：Rocket.Chat 提供 Apps-Engine 框架供开发者构建自定义应用 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 提供 Apps-Engine 框架供开发者构建自定义应用 。" id="skTag-1974606436509634563" class="sk-source-tag" data-sk-source-id="1974606436509634563"></em>。开发者可以使用 TypeScript/JavaScript 编写应用，通过 Hooks 监听聊天事件、调用 API，从而扩展 Rocket<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="开发者可以使用 TypeScript/JavaScript 编写应用，通过 Hooks 监听聊天事件、调用 API，从而扩展 Rocket." id="skTag-1974606387859902467" class="sk-source-tag" data-sk-source-id="1974606387859902467"></em>.Chat 的功能。Apps-Engine 支持将应用发布到市场，与他人共享。</li>
+<li><strong>常用插件举例</strong>：应用市场中已有众多实用插件，例如：Slack 兼容桥接（可与 Slack 频道互通消息）、邮件网关（将邮件转换为聊天消息）、OAuth 登录（集成企业SSO）、视频会议集成（如 Jitsi、BigBlueButton 应用）、客服工单系统（Omnichannel）等。这些插件极大扩展了 Rocket.Chat 的适用场景。</li>
+<li><strong>私有应用与离线安装</strong>：对于无法联网访问官方市场的环境（如内网部署），Rocket.Chat 支持离线安装应用包。管理员可以从市场下载应用的 <code>.zip</code> 包，然后手动上传安装。这使得在隔离环境中也能使用所需的扩展功能。</li>
+</ul>
+<h3 id="section-code-customization">代码定制与二次开发</h3>
+<ul>
+<li><strong>开源代码库</strong>：Rocket.Chat 完全开源，使用 TypeScript 编写 <em data-ref-id="1974607643155349521" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349521" data-sk-source-text="开源代码库 ：Rocket.Chat 完全开源，使用 TypeScript 编写" class="sk-source-tag"></em>。组织可以自由获取源代码，进行修改和二次开发。这对于有特殊需求（如定制UI组件、增加业务逻辑）的场景非常有用。</li>
+<li><strong>自托管部署</strong>：由于代码开源，用户可以在自己的服务器上部署 Rocket.Chat，并根据需要修改源码后构建运行。这提供了高度的自主权，满足对数据掌控和功能定制的要求。</li>
+<li><strong>社区与商业版</strong>：Rocket.Chat 的社区版（Community）完全免费开源，而企业版（Enterprise）在社区版基础上增加了一些高级功能和支持服务 <em data-ref-id="1974607643155349522" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349522" data-sk-source-text="社区与商业版 ：Rocket.Chat 的社区版（Community）完全免费开源，而企业版（Enterprise）在社区版基础上增加了一些高级功能和支持服务"></em>。企业版通常以闭源插件形式提供，但其核心功能仍建立在开源代码之上。用户可根据需求选择使用社区版或购买企业版支持。</li>
+<li><strong>扩展与升级</strong>：进行代码定制时，需要注意后续版本升级的问题。官方建议通过应用插件而非直接修改源码来实现扩展，以利于升级维护 <em data-ref-id="1974607643155349523" data-sk-source-type="model" data-sk-source-id="1974607643155349523" data-sk-source-text="扩展与升级 ：进行代码定制时，需要注意后续版本升级的问题。官方建议通过应用插件而非直接修改源码来实现扩展，以利于升级维护" class="sk-source-tag" data-skywork="text_badge"></em>。如果必须修改源码，应妥善管理补丁，以便在升级新版本时合并，确保功能延续。</li>
+</ul>
+<h2 id="section-management-deployment">管理与部署</h2>
+<h3 id="section-user-management">用户管理</h3>
+<ul>
+<li><strong>用户注册与邀请</strong>：支持多种用户加入方式。管理员可以手动创建用户账户，或启用开放注册让用户自助注册（可设置需管理员审批）。也可以通过邀请链接或邮件邀请用户加入团队，新用户点击链接即可注册账号并加入指定频道。</li>
+<li><strong>用户资料与目录</strong>：每个用户都有个人资料页，可设置姓名、头像、职位、联系方式等信息。Rocket.Chat 提供全局用户目录，方便成员搜索同事信息。管理员可以批量导入/导出用户数据，支持 LDAP/AD 同步以与企业目录集成。</li>
+<li><strong>用户状态与活跃度</strong>：管理员后台可以查看所有用户的在线状态、最近登录时间等信息。对于长期不活跃的账户，可设置自动停用策略。支持用户登录设备管理，管理员或用户本人可查看并撤销异地登录会话，保障账户安全。</li>
+<li><strong>多团队支持</strong>：Rocket.Chat 支持在一个实例中划分多个团队（Workspace）。每个团队有独立的用户集合和频道空间，管理员可以创建并管理多个团队，实现一套系统服务多个组织或部门。不同团队之间用户隔离，但管理员可以跨团队管理。</li>
+</ul>
+<h3 id="section-permission-control">权限控制</h3>
+<ul>
+<li><strong>内置角色</strong>：系统内置多种角色用于权限控制，例如 <strong>管理员（Admin）</strong>拥有完全控制权，<strong>普通用户（User）</strong>具备基本聊天权限，<strong>主持人/版主（Moderator）</strong>可在频道中管理消息和成员，<strong>客服代理（Livechat Agent）</strong>和<strong>客服主管（Livechat Manager）</strong>用于 Omnichannel 客服模块等 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="内置角色：系统内置多种角色用于权限控制，例如 管理员（Admin）拥有完全控制权，普通用户（User）具备基本聊天权限，主持人/版主（Moderator）可在频道中管理消息和成员，客服代理（Livechat Agent）和客服主管（Livechat Manager）用于 Omnichannel 客服模块等 。" id="skTag-1974606387734454277" class="sk-source-tag" data-sk-source-id="1974606387734454277"></em>。Rocket.Chat 的权限体系由多个层次的角色构成，其结构如下图所示：</li>
+</ul>
+<div class="chart-wrapper" id="chart2"></div>
+<div class="data-source">数据来源: <em data-ref-id="1974607643155349525" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349525" data-sk-source-text="数据来源:"></em></div>
+<ul>
+<li><strong>权限矩阵</strong>：几乎所有操作都有对应的权限控制项，管理员可以在后台<strong>权限</strong>设置中查看并修改各角色的权限 <em data-ref-id="1974607643155349526" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349526" data-sk-source-text="权限矩阵 ：几乎所有操作都有对应的权限控制项，管理员可以在后台 权限 设置中查看并修改各角色的权限"></em>。例如，是否允许用户创建公共频道、是否允许编辑他人消息、是否允许使用某应用等。通过精细的权限矩阵，可灵活定制不同用户群体的功能使用范围。<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="通过精细的权限矩阵，可灵活定制不同用户群体的功能使用范围。" id="skTag-1974606387738648577" class="sk-source-tag" data-sk-source-id="1974606387738648577"></em></li>
+<li><strong>自定义角色</strong>：企业版支持创建自定义角色，将一组权限打包后分配给特定用户或用户组 <em data-ref-id="1974607643155349527" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349527" data-sk-source-text="自定义角色 ：企业版支持创建自定义角色，将一组权限打包后分配给特定用户或用户组" class="sk-source-tag"></em>。这在需要更细粒度权限划分时非常有用，例如可以创建“审计员”角色仅赋予查看日志和消息的权限，或“项目负责人”角色赋予管理特定项目频道的权限。</li>
+<li><strong>频道权限</strong>：除了全局角色，Rocket.Chat 还支持频道级别的权限和角色。例如频道所有者和管理员可以任命其他成员为频道版主，赋予其管理该频道消息和成员的权限。某些权限（如删除他人消息）也可限定仅在用户自己创建的频道中生效，以实现分级管理。</li>
+</ul>
+<figure style="text-align: center;">
+<img alt="Rocket.Chat管理面板中角色编辑窗格的截图" src="https://picture-search.tiangong.cn/image/rt/40a2a99b835f97c8330bfe0c3c401f3d.jpg" style="max-height: 280px; max-width: 50vw; max-height: 280px; max-width: 100%;"/>
+<figcaption>Rocket.Chat管理面板中角色编辑窗格的截图，用于管理具有特定角色的用户</figcaption>
+</figure>
+<h3 id="section-deployment-options">部署选项（私有云、公有云等）</h3>
+<ul>
+<li><strong>自托管部署</strong>：用户可以选择将 Rocket.Chat 部署在自己的服务器或私有云上，实现数据完全自主可控 <em data-ref-id="1974607643155349528" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349528" data-sk-source-text="自托管部署 ：用户可以选择将 Rocket.Chat 部署在自己的服务器或私有云上，实现数据完全自主可控"></em>。官方提供了详细的安装指南，支持在 Linux 服务器上通过 Docker、Snap、手动安装等多种方式部署 <em data-ref-id="1974607643155349529" data-sk-source-type="model" data-sk-source-id="1974607643155349529" data-sk-source-text="。官方提供了详细的安装指南，支持在 Linux 服务器上通过 Docker、Snap、手动安装等多种方式部署" class="sk-source-tag" data-skywork="text_badge"></em>。自托管适合对数据安全和隐私要求高的企业，以及有内网部署需求的场景。</li>
+<li><strong>云托管服务</strong>：Rocket.Chat 官方也提供云托管方案（Rocket<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 官方也提供云托管方案（Rocket." id="skTag-1974606574601265156" class="sk-source-tag" data-sk-source-id="1974606574601265156"></em>.Chat Cloud），用户无需维护服务器，由官方负责基础设施和运维 <em data-ref-id="1974607643155349530" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349530" data-sk-source-text="云托管服务 ：Rocket.Chat 官方也提供云托管方案（Rocket.Chat Cloud），用户无需维护服务器，由官方负责基础设施和运维"></em>。云托管分为不同套餐，支持按用户数量计费，提供自动升级和专业支持。对于希望快速上线且规模不大的团队，云托管是省心的选择。</li>
+<li><strong>混合部署与高可用</strong>：支持混合部署模式，例如在私有数据中心部署主服务，同时使用云服务作为备份或扩展。对于大规模用户，Rocket.Chat 可通过横向扩展实现高可用：包括负载均衡多个应用服务器、MongoDB 数据库分片或副本集、文件存储集群等 <em data-ref-id="1974607643155349531" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349531" data-sk-source-text="混合部署与高可用 ：支持混合部署模式，例如在私有数据中心部署主服务，同时使用云服务作为备份或扩展。对于大规模用户，Rocket.Chat 可通过横向扩展实现高可用：包括负载均衡多个应用服务器、MongoDB 数据库分片或副本集、文件存储集群等"></em>。官方文档提供了扩展部署的指导，确保系统在增加用户和消息量时仍保持稳定高效。</li>
+<li><strong>容器化与DevOps</strong>：Rocket.Chat 支持 Docker 容器部署，官方在 Docker Hub 提供了镜像 <em data-ref-id="1974607643155349532" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349532" data-sk-source-text="容器化与DevOps ：Rocket.Chat 支持 Docker 容器部署，官方在 Docker Hub 提供了镜像"></em>。通过 Docker Compose 或 Kubernetes，可方便地编排 Rocket<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 支持 Docker 容器部署，官方在 Docker Hub 提供了镜像 。通过 Docker Compose 或 Kubernetes，可方便地编排 Rocket." id="skTag-1974606267619037185" class="sk-source-tag" data-sk-source-id="1974606267619037185"></em>.Chat 及其依赖（如 MongoDB）。此外，还提供 Ansible、Helm 等自动化部署工具的支持，方便 DevOps 团队将其集成到持续交付流程中。</li>
+</ul>
+<h3 id="section-security-compliance">安全与合规</h3>
+<ul>
+<li><strong>数据加密与隐私</strong>：Rocket.Chat 支持传输层加密（强制使用 HTTPS/WSS），并提供端到端加密选项保护消息内容隐私 <em data-ref-id="1974607643155349533" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349533" data-sk-source-text="数据加密与隐私 ：Rocket.Chat 支持传输层加密（强制使用 HTTPS/WSS），并提供端到端加密选项保护消息内容隐私"></em>。所有存储在数据库中的敏感信息（如密码）均经过哈希或加密处理。管理员可以启用内容审核和数据保留策略，确保聊天记录符合合规要求。</li>
+<li><strong>访问控制与审计</strong>：提供完善的访问控制机制，包括双因素认证（2FA）登录、IP 白名单、登录尝试限制等安全措施。企业版支持会话监控和审计日志，记录关键操作（如管理员修改配置、用户删除消息等），满足审计和合规需求 <em data-ref-id="1974607643155349534" data-sk-source-text="访问控制与审计 ：提供完善的访问控制机制，包括双因素认证（2FA）登录、IP 白名单、登录尝试限制等安全措施。企业版支持会话监控和审计日志，记录关键操作（如管理员修改配置、用户删除消息等），满足审计和合规需求" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349534"></em>。</li>
+<li><strong>合规认证</strong>：Rocket.Chat 非常注重安全性，其云服务通过了多项安全合规认证，如 SOC 2 Type II、ISO/IEC 27001:2013、ISO/IEC 27017:2015、ISO/IEC 27018:2019 等 <em data-ref-id="1974607643155349535" data-sk-source-type="model" data-sk-source-id="1974607643155349535" data-sk-source-text="合规认证 ：Rocket.Chat 非常注重安全性，其云服务通过了多项安全合规认证，如 SOC 2 Type II、ISO/IEC 27001:2013、ISO/IEC 27017:2015、ISO/IEC 27018:2019 等" class="sk-source-tag" data-skywork="text_badge"></em>。这表明其在数据安全、隐私保护和云安全管理方面达到了国际标准，可满足金融、政府等行业的合规要求。</li>
+<li><strong>部署隔离与权限</strong>：对于高安全级别的环境，Rocket.Chat 支持<strong>气隙部署</strong>（Air-Gapped），即完全离线的内部部署，与公网物理隔离 <em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 支持气隙部署（Air-Gapped），即完全离线的内部部署，与公网物理隔离 。" id="skTag-1974606267623231490" class="sk-source-tag" data-sk-source-id="1974606267623231490"></em>。在这种部署下，Rocket.Chat 仍可正常运行，满足涉密网络的使用需求。同时，系统提供分级管理员权限，如设置超级管理员和只读审计员等，确保不同人员的操作范围受限于职责。</li>
+</ul>
+<h3 id="section-performance-scaling">性能与扩展</h3>
+<ul>
+<li><strong>可伸缩架构</strong>：Rocket.Chat 采用分布式架构设计，可根据用户规模进行水平扩展。通过增加应用服务器实例并配合负载均衡，可以支撑更多并发在线用户和消息吞吐量 <em data-ref-id="1974607643155349537" data-sk-source-id="1974607643155349537" data-sk-source-text="可伸缩架构 ：Rocket.Chat 采用分布式架构设计，可根据用户规模进行水平扩展。通过增加应用服务器实例并配合负载均衡，可以支撑更多并发在线用户和消息吞吐量" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model"></em>。数据库层支持 MongoDB 副本集，保证数据高可用和冗余备份。</li>
+<li><strong>消息队列与缓存</strong>：在大规模部署中，Rocket.Chat 引入了消息队列（如 Redis）和缓存机制来提升性能。例如使用 Redis Pub/Sub 实现多实例间的实时消息广播，使用缓存存储常用数据减少数据库压力。这些优化使系统在高并发下依然保持低延迟。</li>
+<li><strong>监控与调优</strong>：Rocket.Chat 提供基本的系统监控指标（在线用户数、消息数等），并可集成第三方监控工具（如 Prometheus）获取更详细的性能数据。管理员可以根据监控结果调整系统配置，例如调整文件上传大小限制、消息历史保留天数等，以优化性能和存储使用。</li>
+<li><strong>版本升级与维护</strong>：官方会定期发布新版本，包含功能改进和性能优化。Rocket.Chat 的升级相对平滑，在社区版和企业版中都提供升级指导。对于关键业务，建议在测试环境验证新版本后再升级生产环境，并做好数据备份，确保升级过程安全可靠。</li>
+</ul>
+<p>综上所述，Rocket.Chat 不仅提供了<strong>即时聊天、音视频通话、文件共享</strong>等完善的核心通讯功能，还通过<strong>任务集成、机器人自动化</strong>等提升团队协作效率<em data-skywork="text_badge" data-sk-source-type="web_search" data-sk-source-text="Chat 不仅提供了即时聊天、音视频通话、文件共享等完善的核心通讯功能，还通过任务集成、机器人自动化等提升团队协作效率。" id="skTag-1974606512296513543" class="sk-source-tag" data-sk-source-id="1974606512296513543"></em>。其<strong>高度可定制</strong>和<strong>开放的扩展接口</strong>，使得企业能够根据自身需求进行二次开发和生态集成。同时，在<strong>用户管理、权限控制、部署方式</strong>上也给予管理员充分的灵活性和安全保障。无论是追求数据自主的技术团队，还是希望替代商业方案的企业，Rocket.Chat 都提供了全面而强大的功能支持 <em data-ref-id="1974607643155349538" data-sk-source-text="综上所述，Rocket.Chat 不仅提供了 即时聊天、音视频通话、文件共享 等完善的核心通讯功能，还通过 任务集成、机器人自动化 等提升团队协作效率。其 高度可定制 和 开放的扩展接口 ，使得企业能够根据自身需求进行二次开发和生态集成。同时，在 用户管理、权限控制、部署方式 上也给予管理员充分的灵活性和安全保障。无论是追求数据自主的技术团队，还是希望替代商业方案的企业，Rocket.Chat 都提供了全面而强大的功能支持" class="sk-source-tag" data-skywork="text_badge" data-sk-source-type="model" data-sk-source-id="1974607643155349538"></em>。通过合理运用上述功能，组织可以搭建出安全、高效且贴合自身工作流的团队通讯平台。</p>
+<div class="reference-container">
+			<div class="reference-section">
+				<h3 class="reference-title">参考资料</h3>
+				<div class="reference-list">
+					
+					<div class="reference-item">
+						<span class="reference-number">[1]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Slack vs Rocket.Chat: Which Team Chat App Is Right …</span>
+									
+							</div>
+							<a href="https://comparlify.com/slack-vs-rocket-chat/" class="reference-link" target="_blank">
+								https://comparlify.com/slack-vs-rocket-chat/
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[2]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Integrate Audio and Video Conferencing - docs.rocket.chat</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/rocketchat-conference-call" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/rocketchat-conference-call
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[3]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat集成Todoist任务管理系统的技术实现 - GitCode博客</span>
+									
+							</div>
+							<a href="https://blog.gitcode.com/dfcade776b3286b219784b5235746ffb.html" class="reference-link" target="_blank">
+								https://blog.gitcode.com/dfcade776b3286b219784b5235746ffb.html
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[4]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat-团队通信的终极免费开源解决方案 - 腾讯云</span>
+									
+							</div>
+							<a href="https://cloud.tencent.com/developer/news/1458493" class="reference-link" target="_blank">
+								https://cloud.tencent.com/developer/news/1458493
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[5]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat 使用指南：如何自建聊天平台 - 知乎</span>
+									
+							</div>
+							<a href="https://zhuanlan.zhihu.com/p/426689726" class="reference-link" target="_blank">
+								https://zhuanlan.zhihu.com/p/426689726
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[6]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">【Rocket-Chat API应用教程】：自动化工作流程的10个关键技巧</span>
+									
+							</div>
+							<a href="https://wenku.csdn.net/column/75q27sy2py" class="reference-link" target="_blank">
+								https://wenku.csdn.net/column/75q27sy2py
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[7]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">docker搭建聊天系统RocketChat - 知乎</span>
+									
+							</div>
+							<a href="https://zhuanlan.zhihu.com/p/677777472" class="reference-link" target="_blank">
+								https://zhuanlan.zhihu.com/p/677777472
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[8]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket Chat Marketplace Overview</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/rocketchat-marketplace" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/rocketchat-marketplace
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[9]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket Chat Marketplace Overview</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/rocketchat-marketplace" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/rocketchat-marketplace
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[10]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Roles in Rocket.Chat</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/roles-in-rocketchat" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/roles-in-rocketchat
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[11]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat_docs/use-rocket.chat/workspace-administration/permissions ...</span>
+									
+							</div>
+							<a href="https://github.com/sporqist/Rocket.Chat_docs/blob/main/use-rocket.chat/workspace-administration/permissions/README.md" class="reference-link" target="_blank">
+								https://github.com/sporqist/Rocket.Chat_docs/blob/main/use-rocket.chat/workspace-administration/permissions/README.md
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[12]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat | Secure CommsOS™ for Mission-Critical …</span>
+									
+							</div>
+							<a href="https://www.rocket.chat/" class="reference-link" target="_blank">
+								https://www.rocket.chat/
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[13]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket-Chat Documentation</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/" class="reference-link" target="_blank">
+								https://docs.rocket.chat/
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[14]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">GitHub - RocketChat/Rocket.Chat: The communications …</span>
+									
+							</div>
+							<a href="https://github.com/RocketChat/Rocket.Chat" class="reference-link" target="_blank">
+								https://github.com/RocketChat/Rocket.Chat
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[15]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat | Secure CommsOS™ for Mission …</span>
+									
+							</div>
+							<a href="https://www.rocket.chat/" class="reference-link" target="_blank">
+								https://www.rocket.chat/
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[16]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat/FEATURES.md at develop - GitHub</span>
+									
+							</div>
+							<a href="https://github.com/RocketChat/Rocket.Chat/blob/develop/FEATURES.md" class="reference-link" target="_blank">
+								https://github.com/RocketChat/Rocket.Chat/blob/develop/FEATURES.md
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[17]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Non-GridFS attached file preview not working after upgrade …</span>
+									
+							</div>
+							<a href="https://github.com/RocketChat/Rocket.Chat/issues/33926" class="reference-link" target="_blank">
+								https://github.com/RocketChat/Rocket.Chat/issues/33926
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[18]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat 使用指南：如何自建聊天平台 - 知乎</span>
+									
+							</div>
+							<a href="https://zhuanlan.zhihu.com/p/426689726" class="reference-link" target="_blank">
+								https://zhuanlan.zhihu.com/p/426689726
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[19]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">An OpenAPI specification for the Rocket.Chat API.</span>
+									
+							</div>
+							<a href="https://github.com/RocketChat/Rocket.Chat-Open-API" class="reference-link" target="_blank">
+								https://github.com/RocketChat/Rocket.Chat-Open-API
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[20]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket Chat Plans for Secure Collaboration Solutions</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/our-plans" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/our-plans
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[21]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Best practices for deployment of modified Rocket.Chat</span>
+									
+							</div>
+							<a href="https://forums.rocket.chat/t/best-practices-for-deployment-of-modified-rocket-chat/20722" class="reference-link" target="_blank">
+								https://forums.rocket.chat/t/best-practices-for-deployment-of-modified-rocket-chat/20722
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[22]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Roles in Rocket.Chat</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/roles-in-rocketchat" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/roles-in-rocketchat
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[23]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket Chat Permissions Management Guide</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/permissions" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/permissions
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[24]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Deploy Rocket.Chat: Setup and Guide</span>
+									
+							</div>
+							<a href="https://docs.rocket.chat/docs/deploy-rocketchat" class="reference-link" target="_blank">
+								https://docs.rocket.chat/docs/deploy-rocketchat
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[25]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat | Pricing for secure team collaboration</span>
+									
+							</div>
+							<a href="https://www.rocket.chat/pricing" class="reference-link" target="_blank">
+								https://www.rocket.chat/pricing
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[26]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">docs/deploy/deploy-rocket.chat/README.md at main - GitHub</span>
+									
+							</div>
+							<a href="https://github.com/RocketChat/docs/blob/main/deploy/deploy-rocket.chat/README.md" class="reference-link" target="_blank">
+								https://github.com/RocketChat/docs/blob/main/deploy/deploy-rocket.chat/README.md
+							</a>
+						</div>
+					</div>
+					
+					<div class="reference-item">
+						<span class="reference-number">[27]</span>
+						<div class="reference-content">
+							<div class="reference-text-container">
+								<span class="reference-text">Rocket.Chat-团队通信的终极免费开源解决方案 - 腾讯云</span>
+									
+							</div>
+							<a href="https://cloud.tencent.com/developer/news/1458493" class="reference-link" target="_blank">
+								https://cloud.tencent.com/developer/news/1458493
+							</a>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div></div>
+<script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chart 1: Rocket.Chat 核心功能分类 (Nested Pie)
+            var chart1 = echarts.init(document.getElementById('chart1'));
+            var option1 = {
+                title: {
+                    text: 'Rocket.Chat 核心功能分类',
+                    subtext: '功能架构概览',
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    top: '15%',
+                    data: ['核心通讯', '协作与生产力', '可定制性与扩展性', '管理与部署', '消息与群组', '音视频通话', '端到端加密', '通知与状态', '文件共享', '任务管理', '应用集成', '界面定制', 'API与开发者工具', '应用市场', '用户管理', '权限控制', '部署选项', '安全与合规']
+                },
+                series: [
+                    {
+                        name: '功能大类',
+                        type: 'pie',
+                        selectedMode: 'single',
+                        radius: [0, '30%'],
+                        label: {
+                            position: 'inner',
+                            fontSize: 14,
+                            color: '#fff',
+                            formatter: '{b}'
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 4, name: '核心通讯' },
+                            { value: 3, name: '协作与生产力' },
+                            { value: 3, name: '可定制性与扩展性' },
+                            { value: 4, name: '管理与部署' }
+                        ]
+                    },
+                    {
+                        name: '具体功能',
+                        type: 'pie',
+                        radius: ['45%', '65%'],
+                        label: {
+                            formatter: '{b}\n({d}%)',
+                            alignTo: 'edge',
+                            minMargin: 5,
+                            edgeDistance: 10,
+                            lineHeight: 15,
+                        },
+                        data: [
+                            { value: 1, name: '消息与群组' },
+                            { value: 1, name: '音视频通话' },
+                            { value: 1, name: '端到端加密' },
+                            { value: 1, name: '通知与状态' },
+                            { value: 1, name: '文件共享' },
+                            { value: 1, name: '任务管理' },
+                            { value: 1, name: '应用集成' },
+                            { value: 1, name: '界面定制' },
+                            { value: 1, name: 'API与开发者工具' },
+                            { value: 1, name: '应用市场' },
+                            { value: 1, name: '用户管理' },
+                            { value: 1, name: '权限控制' },
+                            { value: 1, name: '部署选项' },
+                            { value: 1, name: '安全与合规' }
+                        ]
+                    }
+                ]
+            };
+            chart1.setOption(option1);
+
+            // Chart 2: Rocket.Chat 权限体系结构 (Graph)
+            var chart2 = echarts.init(document.getElementById('chart2'));
+            var option2 = {
+                title: {
+                    text: 'Rocket.Chat 权限体系结构',
+                    left: 'center'
+                },
+                tooltip: {
+                    formatter: function (params) {
+                        if (params.dataType === 'node') {
+                            return params.name.replace('\n', ' ');
+                        }
+                    }
+                },
+                series: [{
+                    type: 'graph',
+                    layout: 'none',
+                    symbolSize: 80,
+                    roam: false,
+                    label: {
+                        show: true,
+                        fontSize: 12,
+                        color: '#fff',
+                        formatter: function(params) {
+                            return params.name.replace('\\n', '\n');
+                        }
+                    },
+                    edgeSymbol: ['circle', 'arrow'],
+                    edgeSymbolSize: [4, 10],
+                    data: [
+                        { name: 'Rocket.Chat\n权限体系', x: 400, y: 50, symbolSize: 100, itemStyle: { color: '#c23531' } },
+                        { name: '管理员角色\n(Admin)', x: 150, y: 200, itemStyle: { color: '#2f4554' } },
+                        { name: '用户角色', x: 400, y: 200, itemStyle: { color: '#61a0a8' } },
+                        { name: 'Omnichannel\n(客服)角色', x: 650, y: 200, itemStyle: { color: '#d48265' } },
+                        { name: '全局角色\n(Global)', x: 325, y: 350, symbolSize: 70, itemStyle: { color: '#91c7ae' } },
+                        { name: '频道角色\n(Room)', x: 475, y: 350, symbolSize: 70, itemStyle: { color: '#749f83' } },
+                        { name: '用户\n(User)', x: 250, y: 450, symbolSize: 60, itemStyle: { color: '#ca8622' } },
+                        { name: '访客\n(Guest)', x: 400, y: 450, symbolSize: 60, itemStyle: { color: '#bda29a' } },
+                        { name: '主持人\n(Moderator)', x: 550, y: 450, symbolSize: 60, itemStyle: { color: '#6e7074' } }
+                    ],
+                    links: [
+                        { source: 'Rocket.Chat\n权限体系', target: '管理员角色\n(Admin)' },
+                        { source: 'Rocket.Chat\n权限体系', target: '用户角色' },
+                        { source: 'Rocket.Chat\n权限体系', target: 'Omnichannel\n(客服)角色' },
+                        { source: '用户角色', target: '全局角色\n(Global)' },
+                        { source: '用户角色', target: '频道角色\n(Room)' },
+                        { source: '全局角色\n(Global)', target: '用户\n(User)' },
+                        { source: '全局角色\n(Global)', target: '访客\n(Guest)' },
+                        { source: '频道角色\n(Room)', target: '主持人\n(Moderator)' }
+                    ]
+                }]
+            };
+            chart2.setOption(option2);
+
+            // Resize charts on window resize
+            window.addEventListener('resize', function () {
+                chart1.resize();
+                chart2.resize();
+            });
+        });
+    </script>
+<div id="ai-watermark" style="width: 100%; text-align: center; padding: 15px; background-color: #ffffff; color: #979FAB; font-family: Arial, sans-serif; z-index: 1000; font-size: 12px;">内容由AI生成，不能保证真实</div>
+</body></html>

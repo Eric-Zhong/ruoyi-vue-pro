@@ -1,0 +1,1197 @@
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>新建模块 | ruoyi-vue-pro 开发指南</title>
+    <meta name="generator" content="VuePress 1.9.2" />
+    <link rel="icon" href="https://doc.iocoder.cn/img/favicon.ico" />
+    <script src="https://static.iocoder.cn/jquery.min.js"></script>
+    <script src="https://static.iocoder.cn/js.cookie.min.js"></script>
+    <script src="https://static.iocoder.cn/answer.js"></script>
+    <link rel="stylesheet" href="https://static.iocoder.cn/answer.css" />
+    <meta
+      name="description"
+      content="RuoYi-Vue 全新 Pro 版本，优化重构所有功能。基于 Spring Boot + MyBatis Plus + Vue &amp; Element 实现的后台管理系统 + 微信小程序，支持 RBAC 动态权限、数据权限、SaaS 多租户、Activiti + Flowable 工作流、三方登录、支付、短信、商城等功能。"
+    />
+    <meta
+      name="keywords"
+      content="ruoyi-vue,权限,数据权限,SaaS,多租户,Activiti,Flowable,工作流,商城,IoT 物联网,AI 大模型"
+    />
+    <meta name="theme-color" content="#11a8cd" />
+    <link
+      rel="stylesheet"
+      href="./assets/css/0.styles.css"
+    />
+    <style data-id="immersive-translate-input-injected-css">
+      .immersive-translate-input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 2147483647;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .immersive-translate-attach-loading::after {
+        content: " ";
+
+        --loading-color: #f78fb6;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: block;
+        margin: 12px auto;
+        position: relative;
+        color: white;
+        left: -100px;
+        box-sizing: border-box;
+        animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-2000%, -50%);
+        z-index: 100;
+      }
+
+      .immersive-translate-loading-spinner {
+        vertical-align: middle !important;
+        width: 10px !important;
+        height: 10px !important;
+        display: inline-block !important;
+        margin: 0 4px !important;
+        border: 2px rgba(221, 244, 255, 0.6) solid !important;
+        border-top: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-left: 2px rgba(0, 0, 0, 0.375) solid !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+        -webkit-animation: immersive-translate-loading-animation 0.6s infinite
+          linear !important;
+        animation: immersive-translate-loading-animation 0.6s infinite linear !important;
+      }
+
+      @-webkit-keyframes immersive-translate-loading-animation {
+        from {
+          -webkit-transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(359deg);
+        }
+      }
+
+      @keyframes immersive-translate-loading-animation {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(359deg);
+        }
+      }
+
+      .immersive-translate-input-loading {
+        --loading-color: #f78fb6;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: block;
+        margin: 12px auto;
+        position: relative;
+        color: white;
+        left: -100px;
+        box-sizing: border-box;
+        animation: immersiveTranslateShadowRolling 1.5s linear infinite;
+      }
+
+      @keyframes immersiveTranslateShadowRolling {
+        0% {
+          box-shadow: 0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0),
+            0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+        }
+
+        12% {
+          box-shadow: 100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0),
+            0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+        }
+
+        25% {
+          box-shadow: 110px 0 var(--loading-color), 100px 0 var(--loading-color),
+            0px 0 rgba(255, 255, 255, 0), 0px 0 rgba(255, 255, 255, 0);
+        }
+
+        36% {
+          box-shadow: 120px 0 var(--loading-color), 110px 0 var(--loading-color),
+            100px 0 var(--loading-color), 0px 0 rgba(255, 255, 255, 0);
+        }
+
+        50% {
+          box-shadow: 130px 0 var(--loading-color), 120px 0 var(--loading-color),
+            110px 0 var(--loading-color), 100px 0 var(--loading-color);
+        }
+
+        62% {
+          box-shadow: 200px 0 rgba(255, 255, 255, 0),
+            130px 0 var(--loading-color), 120px 0 var(--loading-color),
+            110px 0 var(--loading-color);
+        }
+
+        75% {
+          box-shadow: 200px 0 rgba(255, 255, 255, 0),
+            200px 0 rgba(255, 255, 255, 0), 130px 0 var(--loading-color),
+            120px 0 var(--loading-color);
+        }
+
+        87% {
+          box-shadow: 200px 0 rgba(255, 255, 255, 0),
+            200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+            130px 0 var(--loading-color);
+        }
+
+        100% {
+          box-shadow: 200px 0 rgba(255, 255, 255, 0),
+            200px 0 rgba(255, 255, 255, 0), 200px 0 rgba(255, 255, 255, 0),
+            200px 0 rgba(255, 255, 255, 0);
+        }
+      }
+
+      .immersive-translate-toast {
+        display: flex;
+        position: fixed;
+        z-index: 2147483647;
+        left: 0;
+        right: 0;
+        top: 1%;
+        width: fit-content;
+        padding: 12px 20px;
+        margin: auto;
+        overflow: auto;
+        background: #fef6f9;
+        box-shadow: 0px 4px 10px 0px rgba(0, 10, 30, 0.06);
+        font-size: 15px;
+        border-radius: 8px;
+        color: #333;
+      }
+
+      .immersive-translate-toast-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .immersive-translate-toast-hidden {
+        margin: 0 20px 0 72px;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      .immersive-translate-toast-close {
+        color: #666666;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 0 10px;
+        cursor: pointer;
+      }
+
+      @media screen and (max-width: 768px) {
+        .immersive-translate-toast {
+          top: 0;
+          padding: 12px 0px 0 10px;
+        }
+        .immersive-translate-toast-content {
+          flex-direction: column;
+          text-align: center;
+        }
+        .immersive-translate-toast-hidden {
+          margin: 10px auto;
+        }
+      }
+
+      .immersive-translate-dialog {
+        position: fixed;
+        z-index: 2147483647;
+        left: 0;
+        top: 0;
+        display: flex;
+        width: 300px;
+        flex-direction: column;
+        align-items: center;
+        font-size: 15px;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        height: fit-content;
+        border-radius: 20px;
+        background-color: #fff;
+      }
+
+      .immersive-translate-modal {
+        display: none;
+        position: fixed;
+        z-index: 2147483647;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        font-size: 15px;
+      }
+
+      .immersive-translate-modal-content {
+        background-color: #fefefe;
+        margin: 10% auto;
+        padding: 40px 24px 24px;
+        border-radius: 12px;
+        width: 350px;
+        font-family: system-ui, -apple-system, "Segoe UI", "Roboto", "Ubuntu",
+          "Cantarell", "Noto Sans", sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        position: relative;
+      }
+
+      @media screen and (max-width: 768px) {
+        .immersive-translate-modal-content {
+          margin: 25% auto !important;
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .immersive-translate-modal-content {
+          width: 80vw !important;
+          margin: 20vh auto !important;
+          padding: 20px 12px 12px !important;
+        }
+
+        .immersive-translate-modal-title {
+          font-size: 14px !important;
+        }
+
+        .immersive-translate-modal-body {
+          font-size: 13px !important;
+          max-height: 60vh !important;
+        }
+
+        .immersive-translate-btn {
+          font-size: 13px !important;
+          padding: 8px 16px !important;
+          margin: 0 4px !important;
+        }
+
+        .immersive-translate-modal-footer {
+          gap: 6px !important;
+          margin-top: 16px !important;
+        }
+      }
+
+      .immersive-translate-modal .immersive-translate-modal-content-in-input {
+        max-width: 500px;
+      }
+      .immersive-translate-modal-content-in-input
+        .immersive-translate-modal-body {
+        text-align: left;
+        max-height: unset;
+      }
+
+      .immersive-translate-modal-title {
+        text-align: center;
+        font-size: 16px;
+        font-weight: 700;
+        color: #333333;
+      }
+
+      .immersive-translate-modal-body {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333333;
+        margin-top: 24px;
+        word-break: break-all;
+      }
+
+      @media screen and (max-width: 768px) {
+        .immersive-translate-modal-body {
+          max-height: 250px;
+          overflow-y: auto;
+        }
+      }
+
+      .immersive-translate-close {
+        color: #666666;
+        position: absolute;
+        right: 16px;
+        top: 16px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .immersive-translate-close:hover,
+      .immersive-translate-close:focus {
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .immersive-translate-modal-footer {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+
+      .immersive-translate-btn {
+        width: fit-content;
+        color: #fff;
+        background-color: #ea4c89;
+        border: none;
+        font-size: 14px;
+        margin: 0 8px;
+        padding: 9px 30px;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .immersive-translate-btn-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .immersive-translate-btn:hover {
+        background-color: #f082ac;
+      }
+      .immersive-translate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .immersive-translate-btn:disabled:hover {
+        background-color: #ea4c89;
+      }
+
+      .immersive-translate-link-btn {
+        background-color: transparent;
+        color: #ea4c89;
+        border: none;
+        cursor: pointer;
+        height: 30px;
+        line-height: 30px;
+      }
+
+      .immersive-translate-cancel-btn {
+        /* gray color */
+        background-color: rgb(89, 107, 120);
+      }
+
+      .immersive-translate-cancel-btn:hover {
+        background-color: hsl(205, 20%, 32%);
+      }
+
+      .immersive-translate-action-btn {
+        background-color: transparent;
+        color: #ea4c89;
+        border: 1px solid #ea4c89;
+      }
+
+      .immersive-translate-btn svg {
+        margin-right: 5px;
+      }
+
+      .immersive-translate-link {
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-drag: none;
+        text-decoration: none;
+        color: #ea4c89;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .immersive-translate-primary-link {
+        cursor: pointer;
+        user-select: none;
+        -webkit-user-drag: none;
+        text-decoration: none;
+        color: #ea4c89;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      .immersive-translate-modal input[type="radio"] {
+        margin: 0 6px;
+        cursor: pointer;
+      }
+
+      .immersive-translate-modal label {
+        cursor: pointer;
+      }
+
+      .immersive-translate-close-action {
+        position: absolute;
+        top: 2px;
+        right: 0px;
+        cursor: pointer;
+      }
+
+      .imt-image-status {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border-radius: 16px !important;
+      }
+      .imt-image-status img,
+      .imt-image-status svg,
+      .imt-img-loading {
+        width: 28px !important;
+        height: 28px !important;
+        margin: 0 0 8px 0 !important;
+        min-height: 28px !important;
+        min-width: 28px !important;
+        position: relative !important;
+      }
+      .imt-img-loading {
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADgAAAA4CAMAAACfWMssAAAAtFBMVEUAAAD////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////oK74hAAAAPHRSTlMABBMIDyQXHwyBfFdDMSw+OjXCb+5RG51IvV/k0rOqlGRM6KKMhdvNyZBz9MaupmxpWyj437iYd/yJVNZeuUC7AAACt0lEQVRIx53T2XKiUBCA4QYOiyCbiAsuuGBcYtxiYtT3f6/pbqoYHVFO5r+iivpo6DpAWYpqeoFfr9f90DsYAuRSWkFnPO50OgR9PwiCUFcl2GEcx+N/YBh6pvKaefHlUgZd1zVe0NbYcQjGBfzrPE8Xz8aF+71D8gG6DHFPpc4a7xFiCDuhaWgKgGIJQ3d5IMGDrpS4S5KgpIm+en9f6PlAhKby4JwEIxlYJV9h5k5nee9GoxHJ2IDSNB0dwdad1NAxDJ/uXDHYmebdk4PdbkS58CIVHdYSUHTYYRWOJblWSyu2lmy3KNFVJNBhxcuGW4YBVCbYGRZwIooipHsNqjM4FbgOQqQqSKQQU9V8xmi1QlgHqQQ6DDBvRUVCDirs+EzGDGOQTCATgtYTnbCVLgsVgRE0T1QE0qHCFAht2z6dLvJQs3Lo2FQoDxWNUiBhaP4eRgwNkI+dAjVOA/kUrIDwf3CG8NfNOE0eiFotSuo+rBiq8tD9oY4Qzc6YJw99hl1wzpQvD7ef2M8QgnOGJfJw+EltQc+oX2yn907QB22WZcvlUpd143dqQu+8pCJZuGE4xCuPXJqqcs5sNpsI93Rmzym1k4Npk+oD1SH3/a3LOK/JpUBpWfqNySxWzCfNCUITuDG5dtuphrUJ1myeIE9bIsPiKrfqTai5WZxbhtNphYx6GEIHihyGFTI69lje/rxajdh0s0msZ0zYxyPLhYCb1CyHm9Qsd2H37Y3lugVwL9kNh8Ot8cha6fUNQ8nuXi5z9/ExsAO4zQrb/ev1yrCB7lGyQzgYDGuxq1toDN/JGvN+HyWNHKB7zEoK+PX11e12G431erGYzwmytAWU56fkMHY5JJnDRR2eZji3AwtIcrEV8Cojat/BdQ7XOwGV1e1hDjGGjXbdArm8uJZtCH5MbcctVX8A1WpqumJHwckAAAAASUVORK5CYII=");
+        background-size: 28px 28px;
+        animation: image-loading-rotate 1s linear infinite !important;
+      }
+
+      .imt-image-status span {
+        color: var(--bg-2, #fff) !important;
+        font-size: 14px !important;
+        line-height: 14px !important;
+        font-weight: 500 !important;
+        font-family: "PingFang SC", Arial, sans-serif !important;
+      }
+
+      .imt-primary-button {
+        display: flex;
+        padding: 12px 80px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 8px;
+        background: #ea4c89;
+        color: #fff;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .imt-retry-text {
+        color: #999;
+        text-align: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 21px;
+        cursor: pointer;
+      }
+
+      .imt-action-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .imt-modal-content-text {
+        text-align: left;
+        color: #333;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+      }
+
+      @keyframes image-loading-rotate {
+        from {
+          transform: rotate(360deg);
+        }
+        to {
+          transform: rotate(0deg);
+        }
+      }
+
+      .imt-linear-gradient-text {
+        background: linear-gradient(
+          90deg,
+          #00a6ff 0%,
+          #c369ff 52.4%,
+          #ff4590 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .imt-flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .imt-linear-black-btn {
+        border-radius: 50px;
+        background: linear-gradient(66deg, #222 19%, #696969 94.25%);
+        height: 48px;
+        width: 100%;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body class="theme-mode-light">
+    <div id="app" data-server-rendered="true">
+      <div class="theme-container sidebar-open have-rightmenu">
+        <div>
+          <main class="page">
+            <div class="theme-vdoing-wrapper">
+              <div class="articleInfo-wrap" data-v-06225672="">
+                <div class="articleInfo" data-v-06225672="">
+                  <ul class="breadcrumbs" data-v-06225672="">
+                    <li data-v-06225672="">
+                      <a
+                        href="/"
+                        title="首页"
+                        class="iconfont icon-home router-link-active"
+                        data-v-06225672=""
+                      ></a>
+                    </li>
+                    <li data-v-06225672="">
+                      <span data-v-06225672="">开发指南</span>
+                    </li>
+                    <li data-v-06225672="">
+                      <span data-v-06225672="">后端手册</span>
+                    </li>
+                  </ul>
+                  <div class="info" data-v-06225672="">
+                    <div
+                      title="作者"
+                      class="author iconfont icon-touxiang"
+                      data-v-06225672=""
+                    >
+                      <a
+                        href="https://www.iocoder.cn"
+                        target="_blank"
+                        title="作者"
+                        class="beLink"
+                        data-v-06225672=""
+                        >芋道源码</a
+                      >
+                    </div>
+                    <div
+                      title="创建时间"
+                      class="date iconfont icon-riqi"
+                      data-v-06225672=""
+                    >
+                      <a href="javascript:;" data-v-06225672="">2022-03-02</a>
+                    </div>
+                    <!---->
+                  </div>
+                </div>
+              </div>
+              <!---->
+              <div class="content-wrapper">
+                <div class="right-menu-wrapper">
+                  <div class="right-menu-margin">
+                    <div class="right-menu-title">目录</div>
+                    <div class="right-menu-content"></div>
+                  </div>
+                </div>
+                <h1>
+                  <img
+                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAAAXNSR0IArs4c6QAABKFJREFUSA3tVl1oFVcQnrMbrak3QUgkya1akpJYcrUtIqW1JvFBE9LiQ5v6JmJpolbMg32rVrhgoYK0QiMY6i9Y6EMaW5D+xFJaTYItIuK2Kr3+BJNwkxBj05sQY3b3nM6cs2dv9t7NT/vQJw/sndk5M/PNzJkzewGerP+pAmy+ON8lLzUJgA8ZYxYIYZmGYRnctDaWvJJAmTtfP1pvXsBCCPP8QFcCaRkZYACgDZFO4stNIcBCajEOlmmC9XpJ9bAGCaPaPmzPl32dvLSVu3BWCTQs0XQQ6g0DYgwLIoAZbBCdW/i+781o1VVlm/410mw4h06Y7bIPHNyWDyL4FHkX03Q8SrzNhZTZriieckWt7cL6MM85YcLpsi/7O9/iXFT6MswI0DmmpkSaJ0qLxFIm3+i1THHB3zmBH3PYx9CcykcLOeQVVa7QtdxTgQgEleX2AjHYfwA+2ddV77ruGoJUbhGDI09YSNXyMpUt5ylOzxgbUmtOp7NmbNt8v3arjTBfYELmLUV+M+nSawNNAUqpT3ClJWg5I3BLT+cGW/DXNGCa6tx1aakCGEigArTn4TDIPdrXXYKCZNrHLMCOEPvHBlLQ99s9eHB7EB6NTki73CVPQ2F5MSx/uRQixfmq7rK0wYD8w8E905bnPDfwoWs/rfv93NWN/ZfvwsLIU7A09gxECyISeGJkHAau98L97tuw7NXnoPyNF8FcYGLGKsOs0mN3OEyec9esGW/ZEl945dTP34wlR2FZVQWU1q0Cw8Tr7p+hgLLNL0FPxx/Q35mA8aEUrH6nCgwEl0tn7wUiZYJnNRh6DK4UH/k0lfyrsBKdPVv/AriGIQcEDQZ65LBAGe2Rzui9Ybjz7XUppz1/uKBbyVPGkN3ZAeC6hr0x7Nr38N5+EqkoOm17xpoqR9ohQF55ERSvr4Dkr3chNfC3DMzGJlNBElW8w9nsGQvhNGIzDkXzCg8cLK951xHsFBlTJspJNi3ZFIMF2AeDV3q8DNOB+YHi6QTrChDIWDBRi5U5f+ZMfJLu3ccrqxtdxk4SKH336LFxSmkqefwU5T8fhdSdQf9IVKD6aNiwI/hnmcAZ91isYMJIaCUCx9W098+LgruikeTqzqqxKPUwqJyCPJiyemVVZBOijDGjD38Os0jOiSPL1z3SPjXNANbiNPXAdzTfukjjuknNBbyz3nwgTd3AVFqUJ5hpHlq9MveLnWwttUfoygBmvVjuikxND3znrhsELnZk7k+OjIGxeNEkomyLVta0xxn+HZhjBc4YZ/AFjHjz9u3xRZl2BN4aq9nFwWh16IrQ1aHHEd3j1+4/dB9OtH4e29A2H1DyHQRmOSfQZ1Fy7MHBTGB6J/Djq6p3OxyO2cB+4Car7v/o3GXgfAkj23+x9ID1Teoamo/SXcbvSf2PX7Vc8DdCmE1vN9di+32P9/5YR3vLnhCVGUWBjEkr3yh4H8v9CzmsbdhzOKzsJKM90iFdaTMjRPhGVsakRvOaRidljo6H6G7j+ctrJpsP+4COhDIl0La2+FS4+5mlocBaXY5QnGZysIBYoeSsl5qQzrSj/cgNrfuEzlWBfwA+EjrZyWUvpAAAAABJRU5ErkJggg=="
+                  />新建模块<!---->
+                </h1>
+                <div class="theme-vdoing-content content__default">
+                  <p>
+                    本章节，将介绍如何新建名字为
+                    <code>yudao-module-demo</code> 的示例模块，并添加 RESTful
+                    API 接口。
+                  </p>
+                  <p>
+                    虽然内容看起来比较长，是因为艿艿写的比较详细，大量截图，保姆级教程！其实只有五个步骤，保持耐心，跟着艿艿一点点来。🙂
+                    完成之后，你会对整个
+                    <a href="/project-intro/">项目结构</a> 有更充分的了解。
+                  </p>
+                  <h2 id="👍-相关视频教程">
+                    <a href="#👍-相关视频教程" class="header-anchor">#</a> 👍
+                    相关视频教程
+                  </h2>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://t.zsxq.com/07EUrZrNV"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >从零开始 06：如何 5 分钟，创建一个新模块？<span
+                          ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 100 100"
+                            width="15"
+                            height="15"
+                            class="icon outbound"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                            ></path>
+                            <polygon
+                              fill="currentColor"
+                              points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                            ></polygon>
+                          </svg>
+                          <span class="sr-only">(opens new window)</span></span
+                        ></a
+                      >
+                    </li>
+                  </ul>
+                  <h2 id="_1-新建-maven-模块">
+                    <a href="#_1-新建-maven-模块" class="header-anchor">#</a> 1.
+                    新建 Maven 模块
+                  </h2>
+                  <h3 id="_1-1-新建-demo-模块">
+                    <a href="#_1-1-新建-demo-模块" class="header-anchor">#</a>
+                    1.1 新建 demo 模块
+                  </h3>
+                  <p>① 选择 File -&gt; New -&gt; Module 菜单，如下图所示：</p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97%E8%8F%9C%E5%8D%95.png"
+                      alt="打开 New Module"
+                    />
+                  </p>
+                  <p>
+                    ② 选择 Maven 类型，选择父模块为
+                    <code>yudao</code>，输入名字为
+                    <code>yudao-module-demo</code>，并点击 Create
+                    按钮，如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E5%A1%AB%E5%86%99Module%E4%BF%A1%E6%81%AFBoot.png"
+                      alt="填写 Module 信息"
+                    />
+                  </p>
+                  <p>
+                    ③ 打开 <code>yudao-module-demo</code> 模块，删除 src 和 test
+                    下多余的文件，如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E5%88%A0%E9%99%A4%E5%A4%9A%E4%BD%99%E6%96%87%E4%BB%B6Boot.png"
+                      alt="删除多余的文件"
+                    />
+                  </p>
+                  <h3 id="_1-2-添加-demo-依赖">
+                    <a href="#_1-2-添加-demo-依赖" class="header-anchor">#</a>
+                    1.2 添加 demo 依赖
+                  </h3>
+                  <p>
+                    ① 打开 <code>yudao-module-demo</code> 模块的
+                    <code>pom.xml</code> 文件，修改内容如下：
+                  </p>
+                  <div class="custom-block tip">
+                    <p class="custom-block-title">提示</p>
+                    <p>
+                      <code>&lt;!-- --&gt;</code> 部分，只是注释，不需要写到 XML
+                      中。
+                    </p>
+                  </div>
+                  <div class="language-XML extra-class">
+                    <pre
+                      class="language-xml"
+                    ><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>project</span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span>
+         <span class="token attr-name"><span class="token namespace">xsi:</span>schemaLocation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>cn.iocoder.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">&gt;</span></span>${revision}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- 1. 修改 version 为 ${revision} --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modelVersion</span><span class="token punctuation">&gt;</span></span>4.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>modelVersion</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao-module-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>packaging</span><span class="token punctuation">&gt;</span></span>jar<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>packaging</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- 2. 新增 packaging 为 jar --&gt;</span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">&gt;</span></span>${project.artifactId}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- 3. 新增 name 为 ${project.artifactId} --&gt;</span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">&gt;</span></span> <span class="token comment">&lt;!-- 4. 新增 description 为该模块的描述 --&gt;</span>
+        demo 模块，主要实现 XXX、YYY、ZZZ 等功能。
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">&gt;</span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">&gt;</span></span>  <span class="token comment">&lt;!-- 5. 新增依赖，这里引入的都是比较常用的业务组件、技术组件 --&gt;</span>
+        <span class="token comment">&lt;!-- Web 相关 --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>cn.iocoder.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao-spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>cn.iocoder.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao-spring-boot-starter-security<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token comment">&lt;!-- DB 相关 --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>cn.iocoder.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao-spring-boot-starter-mybatis<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+
+        <span class="token comment">&lt;!-- Test 测试相关 --&gt;</span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">&gt;</span></span>cn.iocoder.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">&gt;</span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">&gt;</span></span>yudao-spring-boot-starter-test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">&gt;</span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+                  </div>
+                  <p>
+                    ② 打开 Maven 菜单，点击刷新按钮，让引入的 Maven
+                    依赖生效。如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E5%88%B7%E6%96%B0Maven%E4%BE%9D%E8%B5%96.png"
+                      alt="刷新 Maven 依赖"
+                    />
+                  </p>
+                  <p>
+                    ③ 新建 <code>cn.iocoder.yudao.module.demo</code>
+                    <strong>基础</strong>包，其中
+                    <code>demo</code> 为模块名。之后，新建
+                    <code>controller.admin</code> 和
+                    <code>controller.app</code> 等包。如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E6%96%B0%E5%BB%BA%E5%9F%BA%E7%A1%80%E5%8C%85Boot.png"
+                      alt="新建基础包"
+                    />
+                  </p>
+                  <h2 id="_2-新建-restful-api-接口">
+                    <a href="#_2-新建-restful-api-接口" class="header-anchor"
+                      >#</a
+                    >
+                    2. 新建 RESTful API 接口
+                  </h2>
+                  <p>
+                    ① 在 <code>controller.admin</code> 包，新建一个
+                    DemoTestController 类，并新建一个
+                    <code>/demo/test/get</code> 接口。代码如下：
+                  </p>
+                  <div class="language-Java extra-class">
+                    <pre
+                      class="language-java"
+                    ><code><span class="token keyword">package</span> <span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>module<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>controller<span class="token punctuation">.</span>admin</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>common<span class="token punctuation">.</span>pojo<span class="token punctuation">.</span></span><span class="token class-name">CommonResult</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>swagger<span class="token punctuation">.</span>v3<span class="token punctuation">.</span>oas<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span>tags<span class="token punctuation">.</span></span><span class="token class-name">Tag</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>swagger<span class="token punctuation">.</span>v3<span class="token punctuation">.</span>oas<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span></span><span class="token class-name">Operation</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>validation<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Validated</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RequestMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token import static"><span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>common<span class="token punctuation">.</span>pojo<span class="token punctuation">.</span></span><span class="token class-name">CommonResult</span><span class="token punctuation">.</span><span class="token static">success</span></span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Tag</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"管理后台 - Test"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/demo/test"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Validated</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DemoTestController</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// 这个构造方法，只是方便大家，验证 Controller 有生效</span>
+    <span class="token keyword">public</span> <span class="token class-name">DemoTestController</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"生效啦！！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Operation</span><span class="token punctuation">(</span>summary <span class="token operator">=</span> <span class="token string">"获取 test 信息"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">CommonResult</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">success</span><span class="token punctuation">(</span><span class="token string">"true"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+                  </div>
+                  <p>
+                    <strong>注意</strong>，<code>/demo</code> 是该模块所有
+                    RESTful API 的基础路径，<code>/test</code> 是 Test
+                    功能的基础路径。
+                  </p>
+                  <p>
+                    ② 在 <code>controller.app</code> 包，新建一个
+                    AppDemoTestController 类，并新建一个
+                    <code>/demo/test/get</code> 接口。代码如下：
+                  </p>
+                  <div class="language-Java extra-class">
+                    <pre
+                      class="language-java"
+                    ><code><span class="token keyword">package</span> <span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>module<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>controller<span class="token punctuation">.</span>app</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>common<span class="token punctuation">.</span>pojo<span class="token punctuation">.</span></span><span class="token class-name">CommonResult</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>swagger<span class="token punctuation">.</span>v3<span class="token punctuation">.</span>oas<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span>tags<span class="token punctuation">.</span></span><span class="token class-name">Tag</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">io<span class="token punctuation">.</span>swagger<span class="token punctuation">.</span>v3<span class="token punctuation">.</span>oas<span class="token punctuation">.</span>annotations<span class="token punctuation">.</span></span><span class="token class-name">Operation</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>validation<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Validated</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RequestMapping</span></span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token import"><span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span></span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token keyword">static</span> <span class="token import static"><span class="token namespace">cn<span class="token punctuation">.</span>iocoder<span class="token punctuation">.</span>yudao<span class="token punctuation">.</span>framework<span class="token punctuation">.</span>common<span class="token punctuation">.</span>pojo<span class="token punctuation">.</span></span><span class="token class-name">CommonResult</span><span class="token punctuation">.</span><span class="token static">success</span></span><span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Tag</span><span class="token punctuation">(</span>name <span class="token operator">=</span> <span class="token string">"用户 App - Test"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@RestController</span>
+<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/demo/test"</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Validated</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AppDemoTestController</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">// 这个构造方法，只是方便大家，验证 Controller 有生效</span>
+    <span class="token keyword">public</span> <span class="token class-name">AppDemoTestController</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token string">"生效啦！！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/get"</span><span class="token punctuation">)</span>
+    <span class="token annotation punctuation">@Operation</span><span class="token punctuation">(</span>summary <span class="token operator">=</span> <span class="token string">"获取 test 信息"</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token class-name">CommonResult</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">&gt;</span></span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">success</span><span class="token punctuation">(</span><span class="token string">"true"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+                  </div>
+                  <p>
+                    在 Controller 的命名上，额外增加
+                    <strong>App</strong> 作为前缀，一方面区分是管理后台还是用户
+                    App 的 Controller，另一方面避免 Spring Bean 的名字冲突。
+                  </p>
+                  <p>
+                    可能你会奇怪，这里我们定义了两个
+                    <code>/demo/test/get</code>
+                    接口，会不会存在重复导致冲突呢？答案，当然是并不会。原因是：
+                  </p>
+                  <ul>
+                    <li>
+                      <code>controller.admin</code> 包下的接口，默认会增加
+                      <code>/admin-api</code>，即最终的访问地址是
+                      <code>/admin-api/demo/test/get</code>
+                    </li>
+                    <li>
+                      <code>controller.app</code> 包下的接口，默认会增加
+                      <code>/app-api</code>，即最终的访问地址是
+                      <code>/app-api/demo/test/get</code>
+                    </li>
+                  </ul>
+                  <h2 id="_3-引入-demo-模块">
+                    <a href="#_3-引入-demo-模块" class="header-anchor">#</a> 3.
+                    引入 demo 模块
+                  </h2>
+                  <p>
+                    ① 在 <code>yudao-server</code> 模块的
+                    <code>pom.xml</code> 文件，引入
+                    <code>yudao-module-demo</code> 模块，并点击 Maven
+                    刷新。如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E5%BC%95%E5%85%A5%E6%A8%A1%E5%9D%97Boot.png"
+                      alt="引入模块"
+                    />
+                  </p>
+                  <p>
+                    ② 运行 YudaoServerApplication
+                    类，将后端项目进行启动。启动完成后，可以看到如下日志：
+                  </p>
+                  <div class="language-Bash extra-class">
+                    <pre
+                      class="language-bash"
+                    ><code>class cn.iocoder.yudao.module.demo.controller.admin.DemoTestController生效啦！！！
+class cn.iocoder.yudao.module.demo.controller.app.AppDemoTestController生效啦！！！
+</code></pre>
+                  </div>
+                  <h2 id="_4-测试接口">
+                    <a href="#_4-测试接口" class="header-anchor">#</a> 4.
+                    测试接口
+                  </h2>
+                  <p>
+                    使用浏览器打开
+                    <a
+                      href="http://127.0.0.1:48080/doc.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >http://127.0.0.1:48080/doc.html<span
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                          focusable="false"
+                          x="0px"
+                          y="0px"
+                          viewBox="0 0 100 100"
+                          width="15"
+                          height="15"
+                          class="icon outbound"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                          ></path>
+                          <polygon
+                            fill="currentColor"
+                            points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                          ></polygon>
+                        </svg>
+                        <span class="sr-only">(opens new window)</span></span
+                      ></a
+                    >
+                    地址，进入 Swagger 接口文档。
+                  </p>
+                  <p>
+                    ① 打开“管理后台 - Test”接口，进行
+                    <code>/admin-api/demo/test/get</code>
+                    接口的调试，如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E6%B5%8B%E8%AF%95Admin%E6%8E%A5%E5%8F%A3Boot.png"
+                      alt="测试  接口"
+                    />
+                  </p>
+                  <p>
+                    ② 打开“用户 App - Test”接口，进行
+                    <code>/app-api/demo/test/get</code> 接口的调试，如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E6%B5%8B%E8%AF%95App%E6%8E%A5%E5%8F%A3Boot.png"
+                      alt="测试  接口"
+                    />
+                  </p>
+                  <h2 id="_5-常见问题">
+                    <a href="#_5-常见问题" class="header-anchor">#</a> 5.
+                    常见问题
+                  </h2>
+                  <h3 id="_5-1-访问接口返回-404">
+                    <a href="#_5-1-访问接口返回-404" class="header-anchor">#</a>
+                    5.1 访问接口返回 404？
+                  </h3>
+                  <p>
+                    请检查，你新建的模块的 <code>package</code> 包名是不是在
+                    <code>cn.iocoder.yudao.module</code> 下！
+                  </p>
+                  <p>
+                    如果不是，修改
+                    <a
+                      href="https://github.com/YunaiV/ruoyi-vue-pro/blob/master/yudao-server/src/main/java/cn/iocoder/yudao/server/YudaoServerApplication.java"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      >YudaoServerApplication<span
+                        ><svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                          focusable="false"
+                          x="0px"
+                          y="0px"
+                          viewBox="0 0 100 100"
+                          width="15"
+                          height="15"
+                          class="icon outbound"
+                        >
+                          <path
+                            fill="currentColor"
+                            d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                          ></path>
+                          <polygon
+                            fill="currentColor"
+                            points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                          ></polygon>
+                        </svg>
+                        <span class="sr-only">(opens new window)</span></span
+                      ></a
+                    >
+                    类，增加新建的模块的 <code>package</code> 包名。例如说：
+                  </p>
+                  <div class="language-Java extra-class">
+                    <pre
+                      class="language-java"
+                    ><code><span class="token annotation punctuation">@SpringBootApplication</span><span class="token punctuation">(</span>scanBasePackages <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"${yudao.info.base-package}.server"</span><span class="token punctuation">,</span> <span class="token string">"${yudao.info.base-package}.module"</span><span class="token punctuation">,</span>
+    <span class="token string">"xxx.yyy.zzz"</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment">// xxx.yyy.zzz 是你新建的模块的 `package` 包名</span>
+</code></pre>
+                  </div>
+                  <h3 id="_5-2-接口分组">
+                    <a href="#_5-2-接口分组" class="header-anchor">#</a> 5.2
+                    接口分组
+                  </h3>
+                  <p>
+                    如果你想 Swagger 有该模块的接口分组，则需要新建
+                    GroupedOpenApi Bean。如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/%E6%8E%A5%E5%8F%A3%E5%88%86%E7%BB%84.png"
+                      alt="接口分组"
+                    />
+                  </p>
+                  <h3 id="_5-3-mybatis-日志">
+                    <a href="#_5-3-mybatis-日志" class="header-anchor">#</a> 5.3
+                    MyBatis 日志
+                  </h3>
+                  <p>
+                    如果你希望新模块的 MyBatis 查询会打印 SQL 日志，需要在
+                    <code>logging.level</code> 配置对应的 Logger。如下图所示：
+                  </p>
+                  <p>
+                    <img
+                      src="https://doc.iocoder.cn/img/%E5%90%8E%E7%AB%AF%E6%89%8B%E5%86%8C/%E6%96%B0%E5%BB%BA%E6%A8%A1%E5%9D%97/MyBatis%E6%97%A5%E5%BF%97.png"
+                      alt="MyBatis 日志"
+                    />
+                  </p>
+                  <h3 id="_5-4-如何自定义-api-前缀">
+                    <a href="#_5-4-如何自定义-api-前缀" class="header-anchor"
+                      >#</a
+                    >
+                    5.4 如何自定义 API 前缀
+                  </h3>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://t.zsxq.com/B64Q2"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >https://t.zsxq.com/B64Q2<span
+                          ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 100 100"
+                            width="15"
+                            height="15"
+                            class="icon outbound"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                            ></path>
+                            <polygon
+                              fill="currentColor"
+                              points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                            ></polygon>
+                          </svg>
+                          <span class="sr-only">(opens new window)</span></span
+                        ></a
+                      >
+                    </li>
+                    <li>
+                      <a
+                        href="https://t.zsxq.com/6xS5q"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >https://t.zsxq.com/6xS5q<span
+                          ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 100 100"
+                            width="15"
+                            height="15"
+                            class="icon outbound"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                            ></path>
+                            <polygon
+                              fill="currentColor"
+                              points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                            ></polygon>
+                          </svg>
+                          <span class="sr-only">(opens new window)</span></span
+                        ></a
+                      >
+                    </li>
+                  </ul>
+                  <h3 id="_5-5-每个模块-独立工程">
+                    <a href="#_5-5-每个模块-独立工程" class="header-anchor"
+                      >#</a
+                    >
+                    5.5 每个模块，独立工程
+                  </h3>
+                  <ul>
+                    <li>
+                      <a
+                        href="https://t.zsxq.com/73b2Q"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >https://t.zsxq.com/73b2Q<span
+                          ><svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                            focusable="false"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 100 100"
+                            width="15"
+                            height="15"
+                            class="icon outbound"
+                          >
+                            <path
+                              fill="currentColor"
+                              d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"
+                            ></path>
+                            <polygon
+                              fill="currentColor"
+                              points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"
+                            ></polygon>
+                          </svg>
+                          <span class="sr-only">(opens new window)</span></span
+                        ></a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="page-slot page-slot-bottom">
+                <div
+                  class="wwads-cn wwads-horizontal pageB"
+                  data-id="136"
+                  style="width: 100%; max-height: 80px; min-height: auto"
+                ></div>
+                <style>
+                  .pageB img {
+                    width: 80px !important;
+                  }
+                  .wwads-horizontal .wwads-text,
+                  .wwads-content .wwads-text {
+                    line-height: 1;
+                  }
+                </style>
+              </div>
+            </div>
+            <!---->
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

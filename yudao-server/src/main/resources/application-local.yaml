@@ -50,12 +50,18 @@ spring:
         master:
           # url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true # MySQL Connector/J 8.X 连接的示例
           # url: jdbc:mysql://127.0.0.1:3306/ruoyi-vue-pro?useSSL=true&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true # MySQL Connector/J 5.X 连接的示例
+          # --------------------- MySQL Docker (DragonAI.vip) ---------------------------------
+          url: jdbc:mysql://mysql.dragonai.vip:3306/yudao_db?useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&nullCatalogMeansCurrent=true&rewriteBatchedStatements=true
+          username: yudaodba
+          password: 1qaz@WSX2025
+
           # --------------------- PostgreSQL Docker ---------------------------------
           # docker run --name dragonai-postgres -e POSTGRES_PASSWORD=password01! -d postgres
-          url: jdbc:postgresql://postgresql.dragonai.vip:5432/yudao
-          username: yudao
-          password: SfEs8fKhraCr3E7W
-          driver-class-name: org.postgresql.Driver
+          # url: jdbc:postgresql://postgresql.dragonai.vip:5432/yudao
+          # username: yudao
+          # password: SfEs8fKhraCr3E7W
+          # driver-class-name: org.postgresql.Driver
+
           # url: jdbc:oracle:thin:@127.0.0.1:1521:xe # Oracle 连接的示例
           # url: jdbc:sqlserver://127.0.0.1:1433;DatabaseName=ruoyi-vue-pro;SelectMethod=cursor;encrypt=false;rewriteBatchedStatements=true;useUnicode=true;characterEncoding=utf-8 # SQLServer 连接的示例
           # url: jdbc:dm://127.0.0.1:5236?schema=RUOYI_VUE_PRO # DM 连接的示例
